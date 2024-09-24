@@ -31,8 +31,8 @@ def exclude_bias_and_norm(path: Tuple[Any], val: jnp.ndarray) -> jnp.ndarray:
   """Filter to exclude biaises and normalizations weights."""
   del val
   if path[-1] == "b" or "norm" in path[-2]:
-    return False
-  return True
+    return False  # pytype: disable=bad-return-type  # jax-ndarray
+  return True  # pytype: disable=bad-return-type  # jax-ndarray
 
 
 def _partial_update(updates: optax.Updates,
@@ -135,7 +135,7 @@ def add_weight_decay(
     new_updates = _partial_update(updates, new_updates, params, filter_fn)
     return new_updates, state
 
-  return optax.GradientTransformation(init_fn, update_fn)
+  return optax.GradientTransformation(init_fn, update_fn)  # pytype: disable=wrong-arg-types  # numpy-scalars
 
 
 LarsState = List  # Type for the lars optimizer
